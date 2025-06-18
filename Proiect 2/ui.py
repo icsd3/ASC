@@ -17,7 +17,7 @@ def browse_folder():
         folder_entry.insert(0, foldername)
 
 def browse_signature_file():
-    default_sig_path = r"F:\ASC\Proiect 2 ASC\md5_virus_signatures.txt"
+    default_sig_path = r"E:\projects\ASC\Proiect 2\md5_virus_signatures.txt"
     initial_dir = os.path.dirname(default_sig_path) if os.path.isfile(default_sig_path) else os.path.expanduser("~")
     filename = filedialog.askopenfilename(title="Select virus signature file", initialdir=initial_dir)
     if filename:
@@ -144,7 +144,7 @@ progress_label = tk.Label(root, text="")
 progress_label.pack(padx=10, pady=(0, 10))
 
 folder_entry.insert(0, get_downloads_folder())
-default_sig_path = r"F:\ASC\Proiect 2 ASC\md5_virus_signatures.txt"
+default_sig_path = r"E:\projects\ASC\Proiect 2\md5_virus_signatures.txt"
 if os.name == 'nt' and os.path.isfile(default_sig_path):
     signature_entry.insert(0, default_sig_path)
 
