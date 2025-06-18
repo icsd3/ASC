@@ -2,7 +2,7 @@ import os
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 import threading
-import main  # your main.py file
+import main
 
 def get_downloads_folder():
     home = os.path.expanduser("~")
@@ -17,7 +17,6 @@ def browse_folder():
         folder_entry.insert(0, foldername)
 
 def browse_signature_file():
-    # Default Windows path for signatures, empty otherwise
     default_sig_path = r"F:\ASC\Proiect 2 ASC\md5_virus_signatures.txt"
     initial_dir = os.path.dirname(default_sig_path) if os.path.isfile(default_sig_path) else os.path.expanduser("~")
     filename = filedialog.askopenfilename(title="Select virus signature file", initialdir=initial_dir)
@@ -50,17 +49,14 @@ def scan_thread():
         start_btn.config(state='normal')
         return
 
-    # Clear previous results
     for item in infected_tree.get_children():
         infected_tree.delete(item)
 
-    # Reset progress UI
     progress_bar['value'] = 0
     progress_label.config(text="Starting scan...")
     delete_btn.config(state='disabled')
 
     try:
-        # Call scan_folder with the progress callback
         results = main.scan_folder(folder_path, sig_path, progress_callback=update_progress)
     except Exception as e:
         messagebox.showerror("Error", f"Scanning failed:\n{e}")
@@ -147,7 +143,6 @@ progress_bar.pack(fill='x', padx=10, pady=(0, 5))
 progress_label = tk.Label(root, text="")
 progress_label.pack(padx=10, pady=(0, 10))
 
-# Set default paths
 folder_entry.insert(0, get_downloads_folder())
 default_sig_path = r"F:\ASC\Proiect 2 ASC\md5_virus_signatures.txt"
 if os.name == 'nt' and os.path.isfile(default_sig_path):

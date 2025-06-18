@@ -2,7 +2,6 @@ import hashlib
 import os
 
 def compute_md5_hash(filepath):
-    """Compute the MD5 hash of a file."""
     md5_hash = hashlib.md5()
     try:
         with open(filepath, 'rb') as f:
@@ -17,7 +16,6 @@ def compute_md5_hash(filepath):
         return None
 
 def load_signature_database(filename):
-    """Load virus signatures (MD5 hashes) from a file."""
     if not os.path.isfile(filename):
         print(f"Error: Signature file '{filename}' not found.")
         return set()
@@ -29,11 +27,6 @@ def load_signature_database(filename):
         return set()
 
 def scan_file(filepath, signature_db_path):
-    """Scan the file by comparing its MD5 hash against known signatures.
-
-    Returns:
-        tuple(md5_hash: str or None, infected: bool)
-    """
     file_hash = compute_md5_hash(filepath)
     if file_hash is None:
         return None, False
@@ -46,23 +39,12 @@ def scan_file(filepath, signature_db_path):
     return file_hash, infected
 
 def scan_folder(folder_path, signature_db_path, progress_callback=None):
-    """Scan all files recursively in the folder and its subfolders.
-
-    Args:
-        folder_path (str): folder to scan
-        signature_db_path (str): path to virus signatures file
-        progress_callback (function): optional callback with signature (current, total)
-
-    Returns:
-        dict with filepath as key, and (md5_hash, infected) tuple as value.
-    """
     results = {}
     signatures = load_signature_database(signature_db_path)
     if not signatures:
         print("Warning: No virus signatures loaded.")
         return results
 
-    # Collect all files first to get total count
     all_files = []
     for root, _, files in os.walk(folder_path):
         for filename in files:
@@ -76,7 +58,7 @@ def scan_folder(folder_path, signature_db_path, progress_callback=None):
             infected = md5_hash.lower() in signatures
             results[filepath] = (md5_hash, infected)
         else:
-            results[filepath] = (None, False)  # Could not read file
+            results[filepath] = (None, False)
 
         if progress_callback:
             progress_callback(index, total_files)
